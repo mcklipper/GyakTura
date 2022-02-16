@@ -1,0 +1,43 @@
+﻿@model IEnumerable<GyakTura.Models.Tour>
+
+<h1>Túrák</h1>
+
+<a asp-controller="Tour" asp-action="Save">
+    <button class="btn btn-success mb-4">Új túra Rögzítése</button>
+</a>
+
+@if (Model != null && Model.Count() > 0)
+{
+        <table class="table table-hover table-striped">
+
+            <tr>
+                <th>Dátum</th>
+                <th>Uticél</th>
+                <th>Km</th>
+                <th>Megjegyzés</th>
+                <th>Műveletek</th>
+            </tr>
+
+        @foreach (var tour in Model)
+        {
+            <tr>
+                <td>@tour.Date.ToString("yyyy. MMMM dd.")</td>
+                <td>@tour.Destination</td>
+                <td>@tour.Km</td>
+                <td>@tour.Comment</td>
+                <td>
+                    <a asp-controller="Tour" asp-action="Save" asp-route-id="@tour.Id">Szerkesztés</a> |
+                    <a asp-controller="Tour" asp-action="Remove" asp-route-id="@tour.Id">Törlés</a>
+                </td>
+            </tr>
+        }
+    </table>
+
+    <p>Összesen @Model.Count() túrát teljesített!</p>
+    <p>Utolsó túra dátuma: @Model.First().Date.ToString("yyyy. MMMM dd.")</p>
+    <p>Összesen megtett km: @Model.Sum(x => x.Km)</p>
+}
+else
+{
+    <h4>Ön még nem teljesített túrát!</h4>
+}
